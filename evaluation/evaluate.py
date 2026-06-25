@@ -69,19 +69,15 @@ def evaluate_retrieval():
     print(f"Retrieval Precision (Top-5): {hits}/{total} = {precision:.0f}%")
     print("=" * 70)
 
-    # Try full evaluation with LLM if API key is available
-    if os.environ.get("GEMINI_API_KEY"):
-        print("\nRunning full evaluation with answer generation...")
-        from rag.retrieval import ask
+    print("\nRunning full evaluation with answer generation...")
+    from rag.retrieval import ask
 
-        for tq in test_queries[:3]:  # Run first 3 to save API calls
-            result = ask(tq["query"], collection=collection, use_hyde=True)
-            print(f"\nQ: {tq['query']}")
-            print(f"A: {result['answer'][:200]}...")
-            print(f"Method: {result['method']}")
-            print(f"Sources: {[s['title'] for s in result['sources']]}")
-    else:
-        print("\nNote: Set GEMINI_API_KEY to run full evaluation with answer generation.")
+    for tq in test_queries[:3]:  # Run first 3
+        result = ask(tq["query"], collection=collection, use_hyde=True)
+        print(f"\nQ: {tq['query']}")
+        print(f"A: {result['answer'][:200]}...")
+        print(f"Method: {result['method']}")
+        print(f"Sources: {[s['title'] for s in result['sources']]}")
 
 
 if __name__ == "__main__":

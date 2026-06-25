@@ -4,9 +4,7 @@ This module implements retrieval-augmented generation with HyDE
 (Hypothetical Document Embeddings) as the advanced RAG technique.
 """
 
-import os
-from google import genai
-from google.genai import types
+from ollamafreeapi import OllamaFreeAPI
 from rag.indexing import get_collection
 
 
@@ -53,26 +51,16 @@ Provide a helpful, detailed answer based on the context above:"""
 
 # ── LLM Configuration ────────────────────────────────────────
 
-def _get_client() -> genai.Client:
-    """Get a configured Gemini client.
+def _get_client() -> OllamaFreeAPI:
+    """Get a configured OllamaFreeAPI client.
 
     Returns:
-        Configured genai.Client instance.
-
-    Raises:
-        EnvironmentError: If GEMINI_API_KEY is not set.
+        Configured OllamaFreeAPI instance.
     """
-    api_key = os.environ.get("GEMINI_API_KEY")
-    if not api_key:
-        raise EnvironmentError(
-            "GEMINI_API_KEY environment variable is not set. "
-            "Get a key at https://aistudio.google.com/apikey and add it "
-            "to your .env file."
-        )
-    return genai.Client(api_key=api_key)
+    return OllamaFreeAPI()
 
 
-MODEL_NAME = "gemini-2.0-flash"
+MODEL_NAME = "llama3.2:3b"
 
 
 # ── Retrieval Functions ──────────────────────────────────────
@@ -128,11 +116,16 @@ def generate_hyde_document(query: str) -> str:
     """
     client = _get_client()
     prompt = HYDE_PROMPT.format(query=query)
-    response = client.models.generate_content(
+    # The new OllamaFreeAPI returns a string when we call chat directly or dict depending on version. Let's see.
+    # The README says: response = client.chat(model="...", prompt="...")
+    # and print(response) suggests it might be a string or object.
+    response = client.chat(
         model=MODEL_NAME,
-        contents=prompt,
+        prompt=prompt,
+        temperature=0.7
     )
-    return response.text
+    # Depending on OllamaFreeAPI return type, it might be a string. We'll handle it as a string.
+    return str(response)
 
 
 def retrieve_hyde(
@@ -201,15 +194,16 @@ def generate_response(query: str, context_chunks: list[dict]) -> str:
 
     prompt = QA_PROMPT.format(context=context_str, query=query)
 
-    response = client.models.generate_content(
+    # OllamaFreeAPI doesn't have a direct 'system prompt' kwarg in the basic example,
+    # so we'll prepend the system prompt to the user prompt.
+    full_prompt = f"{SYSTEM_PROMPT}\n\n{prompt}"
+
+    response = client.chat(
         model=MODEL_NAME,
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            temperature=0.3,
-            max_output_tokens=1024,
-        ),
+        prompt=full_prompt,
+        temperature=0.3
     )
-    return response.text
+    return str(response)
 
 
 # ── Main Ask Function ────────────────────────────────────────
@@ -277,9 +271,6 @@ def ask(
 
 
 if __name__ == "__main__":
-    from dotenv import load_dotenv
-    load_dotenv()
-
     print("=" * 60)
     print("ChefBot - RAG Retrieval Test")
     print("=" * 60)

@@ -63,14 +63,6 @@ def main():
 
     print_banner()
 
-    # Check for API key
-    if not os.environ.get("GEMINI_API_KEY"):
-        print(f"{RED}✗ GEMINI_API_KEY not set!{RESET}")
-        print(f"  Create a {CYAN}.env{RESET} file with your key:")
-        print(f"  {DIM}GEMINI_API_KEY=your_key_here{RESET}")
-        print(f"  Get one at: {BLUE}https://aistudio.google.com/apikey{RESET}\n")
-        sys.exit(1)
-
     # Ensure index is built
     try:
         collection = ensure_index()

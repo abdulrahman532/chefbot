@@ -40,11 +40,11 @@ ChefBot is a domain-specific AI assistant for **recipes and cooking**. This doma
                 │                 │  Tools:     │
          ┌──────▼──────┐         │ • substitute│
          │  Retrieved  │         │ • nutrition │
-         │  Context    │         │ • search    │
+         │  Retrieved  │         │ • search    │
          └──────┬──────┘         │ Resource:   │
                 │                │ • categories│
          ┌──────▼──────┐         └─────────────┘
-         │   Gemini    │
+         │OllamaFreeAPI│
          │ Generation  │
          └──────┬──────┘
                 │
@@ -54,7 +54,7 @@ ChefBot is a domain-specific AI assistant for **recipes and cooking**. This doma
 ```
 
 **Key Components:**
-- **RAG Pipeline** (`rag/`): Fixed-size chunking with overlap → ChromaDB vector store → HyDE-enhanced retrieval → Gemini Flash generation
+- **RAG Pipeline** (`rag/`): Fixed-size chunking with overlap → ChromaDB vector store → HyDE-enhanced retrieval → OllamaFreeAPI generation
 - **MCP Server** (`mcp_server/`): FastMCP server with 3 tools + 1 resource
 - **CLI** (`main.py`): Interactive command-line interface
 
@@ -76,7 +76,6 @@ HyDE is particularly effective for abstract queries like *"something warm and co
 
 ### Prerequisites
 - Python 3.11+
-- A [Gemini API key](https://aistudio.google.com/apikey) (free tier works)
 
 ### Installation
 
@@ -92,10 +91,6 @@ source .venv/bin/activate   # Linux/Mac
 
 # Install dependencies
 pip install -r requirements.txt
-
-# Configure API key
-cp .env.example .env
-# Edit .env and add your GEMINI_API_KEY
 ```
 
 ### Build the Index
@@ -182,7 +177,7 @@ chefbot/
 
 ## Technologies Used
 
-- **LLM**: Google Gemini 2.0 Flash (via `google-generativeai`)
+- **LLM**: `llama3.2:3b` via `ollamafreeapi` (No API keys required)
 - **Vector DB**: ChromaDB (local, with default all-MiniLM-L6-v2 embeddings)
 - **MCP Framework**: FastMCP 3.x
 - **Language**: Python 3.11+
