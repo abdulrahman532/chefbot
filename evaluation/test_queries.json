@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "query": "How do I make spaghetti bolognese?",
+        "expected_source": "spaghetti_bolognese.md",
+        "category": "recipe_lookup"
+    },
+    {
+        "id": 2,
+        "query": "What's a good easy dessert recipe?",
+        "expected_source": "chocolate_brownies.md",
+        "category": "recommendation"
+    },
+    {
+        "id": 3,
+        "query": "How long does it take to cook chicken tikka masala?",
+        "expected_source": "chicken_tikka_masala.md",
+        "category": "specific_detail"
+    },
+    {
+        "id": 4,
+        "query": "What ingredients do I need for guacamole?",
+        "expected_source": "guacamole.md",
+        "category": "ingredient_list"
+    },
+    {
+        "id": 5,
+        "query": "Can you suggest a vegetarian meal?",
+        "expected_source": "vegetarian_chili.md",
+        "category": "recommendation"
+    },
+    {
+        "id": 6,
+        "query": "What's the nutritional information for caesar salad?",
+        "expected_source": "caesar_salad.md",
+        "category": "nutrition"
+    },
+    {
+        "id": 7,
+        "query": "How do I make a creamy Italian pasta dish?",
+        "expected_source": "chicken_alfredo.md",
+        "category": "recipe_lookup"
+    },
+    {
+        "id": 8,
+        "query": "What's a good breakfast recipe with eggs?",
+        "expected_source": "shakshuka.md",
+        "category": "recommendation"
+    },
+    {
+        "id": 9,
+        "query": "How do I caramelize onions for French onion soup?",
+        "expected_source": "french_onion_soup.md",
+        "category": "technique"
+    },
+    {
+        "id": 10,
+        "query": "What Asian recipes do you have?",
+        "expected_source": "pad_thai.md",
+        "category": "category_search"
+    }
+]
